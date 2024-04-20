@@ -1,10 +1,10 @@
-import {Container, Row, Form, Col} from "react-bootstrap";
+import {Container, Row, Form, Col, Table} from "react-bootstrap";
 import React from "react";
 import animalFile from "../../../../public/animals.json";
 import adjectiveFile from "../../../../public/adjectives.json";
 
-function capitalizeInitial(s?: string) : string {
-    return s? s[0].toLocaleUpperCase() + s.slice(1) : ""
+function capitalizeInitial(s?: string): string {
+    return s ? s[0].toLocaleUpperCase() + s.slice(1) : ""
 }
 
 function randomlyChoose<T>(l: T[]): T | undefined {
@@ -14,15 +14,15 @@ function randomlyChoose<T>(l: T[]): T | undefined {
     return l[Math.floor(Math.random() * l.length)]
 }
 
-function spaceFormatter(words: string[]) : string {
+function spaceFormatter(words: string[]): string {
     return words.map(capitalizeInitial).join(' ')
 }
 
-function pascalCaseFormatter(words: string[]) : string {
+function pascalCaseFormatter(words: string[]): string {
     return words.map(capitalizeInitial).join('')
 }
 
-function camelCaseFormatter(words: string[]) : string {
+function camelCaseFormatter(words: string[]): string {
     if (words.length == 0) {
         return ""
     }
@@ -32,19 +32,19 @@ function camelCaseFormatter(words: string[]) : string {
     }, words[0].toLowerCase())
 }
 
-function underscoreFormatter(words: string[]) : string {
+function underscoreFormatter(words: string[]): string {
     return words.map(word => word.toLowerCase()).join('_')
 }
 
-function kebabFormatter(words: string[]) : string {
+function kebabFormatter(words: string[]): string {
     return words.map(word => word.toLowerCase()).join('-')
 }
 
-function chunkResults<T>(list: T[], chunkSize: number) : T[][] {
-    const result : T[][] = []
+function chunkResults<T>(list: T[], chunkSize: number): T[][] {
+    const result: T[][] = []
 
     return list.reduce((acc, elem, index) => {
-        const rowNum = Math.floor(index/chunkSize)
+        const rowNum = Math.floor(index / chunkSize)
         if (acc.length == rowNum) {
             const empty: T[] = []
             acc.push(empty)
@@ -103,8 +103,10 @@ const DEFAULT_FORMATTER: string = NameFormatStyle.Space
 
 const initialList = ('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
     .split('')
-    .map(letter => { return {letter: letter, label: letter} })
-    .concat( {letter: DEFAULT_INIT_LETTER, label: 'Any'} )
+    .map(letter => {
+        return {letter: letter, label: letter}
+    })
+    .concat({letter: DEFAULT_INIT_LETTER, label: 'Any'})
     .map(l => <option value={l.letter} key={`initialLetter-${l.letter}`}>{l.label}</option>)
 
 const numGenerationList = Array
@@ -119,7 +121,7 @@ const numAdjectivesList = Array
         <option value={num} key={`numAdj-${num}`}>{num}</option>
     ))
 
-const formatterList = [ ...formatterMap.keys() ]
+const formatterList = [...formatterMap.keys()]
     .map(style => <option value={style} key={`formatter-${style}`}>{style}</option>)
 
 export function AdjectiveAnimalGenerator() {
@@ -137,10 +139,12 @@ export function AdjectiveAnimalGenerator() {
     })
 
     const chunkedNames = chunkResults(generatedNames, 4)
-        .map((chunk , rowIdx)=>
-            <Row key={`result-row-${rowIdx}`}>
-                {chunk.map((name , colIdx) => (<Col key={`result-${rowIdx}-${colIdx}`}>{name}</Col>))}
-            </Row>
+        .map((chunk, rowIdx) =>
+            <tr key={`result-row-${rowIdx}`}>
+                {chunk.map((name, colIdx) => (
+                    <td key={`result-${rowIdx}-${colIdx}`}>{name}</td>
+                ))}
+            </tr>
         )
 
     return (
@@ -227,7 +231,11 @@ export function AdjectiveAnimalGenerator() {
                 </Row>
             </Form>
             <Row>
-                {chunkedNames}
+                <Table striped bordered>
+                    <tbody>
+                    {chunkedNames}
+                    </tbody>
+                </Table>
             </Row>
         </Container>
     )

@@ -61,7 +61,9 @@ export function HashDigestGenerator() {
                                     variant="outline-secondary"
                                     size="sm"
                                     className="float-end"
-                                    onClick={() => {navigator.clipboard.writeText(hash).finally()}}
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(hash).finally()
+                                    }}
                                 >
                                     Copy
                                 </Button>
@@ -101,7 +103,7 @@ export function HashDigestGenerator() {
                     <Form.Control
                         as="textarea"
                         rows={10}
-                        onChange={e=> setInput(e.target.value)}
+                        onChange={e => setInput(e.target.value)}
                     />
                 </Row>
             )
@@ -135,13 +137,13 @@ export function HashDigestGenerator() {
             <Row>
                 <Table striped bordered hover>
                     <thead>
-                        <tr>
-                            <th>Algorithm</th>
-                            <th>Hash</th>
-                        </tr>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Hash</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        {outputList}
+                    {outputList}
                     </tbody>
                 </Table>
             </Row>
